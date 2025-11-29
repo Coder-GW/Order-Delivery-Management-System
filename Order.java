@@ -38,7 +38,7 @@ public class Order {
         this.numberOfItems = 0;//example value, replace with database call
 
         for (int i = 1; i <= numberOfItems; i++) {
-            itemList.add(new Item("Item" + i, 10.0 * i, 100)); // Example items
+            itemList.add(new Item(00000001, "Item" + i, 10.0 * i, 100)); // Example items
         }
     }
 
