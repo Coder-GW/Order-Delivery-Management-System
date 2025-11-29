@@ -1,5 +1,3 @@
-package COMP2140;
-
 public class Item {
     private Integer itemID;
     private String itemName;
