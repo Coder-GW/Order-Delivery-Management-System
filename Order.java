@@ -236,7 +236,6 @@ public class Order {
     public String toJson() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
-        sb.append("\"order_id\":\"").append(escapeJson(String.valueOf(orderID))).append("\",");
         sb.append("\"customer_id\":\"").append(escapeJson(customerID)).append("\"");
         sb.append("}");
         return sb.toString();
@@ -249,7 +248,7 @@ public class Order {
 
     public boolean saveToSupabase() throws IOException, InterruptedException {
         String body = "[" + toJson() + "]";
-        HttpResponse<String> resp = SupabaseClient.postUpsert("orders", body, "order_id", null);
+        HttpResponse<String> resp = SupabaseClient.postUpsert("orders", body, null, null);
         return resp.statusCode() >= 200 && resp.statusCode() < 300;
     }
 
