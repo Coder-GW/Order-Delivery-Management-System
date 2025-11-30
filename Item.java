@@ -1,14 +1,18 @@
-package COMP2140;
-
 public class Item {
+    private Integer itemID;
     private String itemName;
     private Double itemPrice;
     private Integer itemStock;
 
-    public Item(String itemName, Double itemPrice, Integer itemStock) {
+    public Item(Integer itemID, String itemName, Double itemPrice, Integer itemStock) {
+        this.itemID = itemID;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
+    }
+
+    public Integer getItemID() {
+        return itemID;
     }
 
     public String getItemName() {

@@ -1,4 +1,7 @@
-package COMP2140;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.net.http.HttpResponse;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,21 +10,20 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Order {
-    private String orderID;
+    private static Integer orderID = 0;
     private String customerID;
-    private Date orderDate;
+    private Date orderDate = new Date();
     private Double tax;
     private Double discount;
-    private Integer numberOfItems;
+    private Item newItem;
     private List<Item> itemList = new ArrayList<>();
     private Map<Item, Integer> cart = new HashMap<>();
     private boolean checkout = false;
     private Double orderTotal;
 
-    public Order(String orderID, String customerID, Date orderDate) {
-        this.orderID = orderID;
+    public Order(String customerID) {
+        Order.orderID++;
         this.customerID = customerID;
-        this.orderDate = orderDate;
         this.orderTotal = 0.0;
 
         //pull the data from database for tax and discount rates
@@ -34,16 +36,25 @@ public class Order {
             this.discount = 0.0;
         }
 
-        //pull the data from database for number of items to be used for the number of items as well as the actual item listings to be added
-        this.numberOfItems = 0;//example value, replace with database call
+        Integer id=1;
+        do {
+             try {
+                newItem = fetchFromSupabase(id);
+            } catch (IOException | InterruptedException e) {
+                newItem = null;
+            }
+            id++;
+            if (newItem != null) {
+                itemList.add(newItem);
+            }
+        }while (newItem != null);
+        id = 1; // reset id for future use
 
-        for (int i = 1; i <= numberOfItems; i++) {
-            itemList.add(new Item("Item" + i, 10.0 * i, 100)); // Example items
+        try {
+            getOrder();
+        } catch (Exception e) {
+            // TODO: handle exception
         }
-    }
-
-    public String getOrderID() {
-        return orderID;
     }
 
     public String getCustomerID() {
@@ -122,7 +133,7 @@ public class Order {
         System.out.println("Cart cleared.");
     }
 
-    public void getOrder() {
+    public void getOrder() throws IOException, InterruptedException {
         Scanner sc = new Scanner(System.in);
         checkout = false;
 
@@ -211,12 +222,71 @@ public class Order {
                 int quantity = entry.getValue();
                 item.setItemStock(item.getItemStock() - quantity);
                 //add database update logic here for item stock and order creation
+                saveToSupabase();
             }
 
             checkout = true;
             System.out.println("Checkout complete. Thank you for your purchase!");
         }
+    }
 
-        sc.close();
+    // ------------------- Supabase helpers / JSON -------------------
+    // Note: ensure Supabase table "delivery_drivers" has columns:
+    // driver_id, name, contact_number, license_number, vehicle_info, is_available
+    public String toJson() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"order_id\":\"").append(escapeJson(String.valueOf(orderID))).append("\",");
+        sb.append("\"customer_id\":\"").append(escapeJson(customerID)).append("\"");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private static String escapeJson(String s) {
+        if (s == null) return "";
+        return s.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+
+    public boolean saveToSupabase() throws IOException, InterruptedException {
+        String body = "[" + toJson() + "]";
+        HttpResponse<String> resp = SupabaseClient.postUpsert("orders", body, "order_id", null);
+        return resp.statusCode() >= 200 && resp.statusCode() < 300;
+    }
+
+    private static String extractJsonString(String json, String key) {
+        String look = "\"" + key + "\"";
+        int idx = json.indexOf(look);
+        if (idx == -1) return "";
+        int colon = json.indexOf(":", idx + look.length());
+        if (colon == -1) return "";
+        int start = json.indexOf("\"", colon);
+        if (start == -1) {
+            int end = json.indexOf(",", colon);
+            if (end == -1) end = json.length();
+            return json.substring(colon+1, end).trim().replaceAll("[,\\s\"]", "");
+        }
+        int end = json.indexOf("\"", start + 1);
+        if (end == -1) return "";
+        return json.substring(start + 1, end);
+    }
+
+    public static Item fetchFromSupabase(Integer productID) throws IOException, InterruptedException {
+        String id = String.valueOf(productID);
+        String encodedId = URLEncoder.encode(id, StandardCharsets.UTF_8);
+        String query = "products?select=*&product_id=eq." + encodedId;
+        HttpResponse<String> resp = SupabaseClient.get(query, null);
+        if (resp.statusCode() >= 200 && resp.statusCode() < 300) {
+            String body = resp.body();
+            if (body != null && body.trim().startsWith("[") && body.trim().length() > 2) {
+                String obj = body.trim();
+                obj = obj.substring(1, obj.length()-1).trim();
+                String product = extractJsonString(obj, "product_name");
+                String stock = extractJsonString(obj, "stock");
+                String uPrice = extractJsonString(obj, "unit_price");
+                Item i = new Item(productID, product, Double.parseDouble(uPrice), Integer.parseInt(stock));
+                return i;
+            }
+        }
+        return null;
     }
 }
