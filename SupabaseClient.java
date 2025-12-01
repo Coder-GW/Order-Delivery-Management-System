@@ -152,7 +152,7 @@ public class SupabaseClient {
         Map<String, String> map = new HashMap<>();
         // candidates: current working dir, and a likely project path
         Path cwd = Paths.get(System.getProperty("user.dir"), ".env");
-        Path projectEnv = Paths.get("c:\\Users\\Miguel\\OneDrive\\Desktop\\SOFTWARE ENGINEERING PROJECT PROPOSAL\\.env");
+        Path projectEnv = Paths.get(".env");
         Path[] candidates = new Path[] { cwd, projectEnv };
 
         for (Path p : candidates) {
