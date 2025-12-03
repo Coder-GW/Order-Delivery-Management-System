@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -12,6 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Properties;
+import javax.swing.JOptionPane;
 
 /*
  Simple Supabase REST helper using Java 11+ HttpClient.
@@ -22,42 +25,16 @@ import java.util.List;
 */
 public class SupabaseClient {
     // values will be initialized in static block (attempt env, then .env)
-    private static final String SUPABASE_URL;
-    private static final String SUPABASE_KEY;
-    private static final boolean DEBUG;
+    private static final Map<String, String> env=loadDotEnv();
+    private static final String SUPABASE_URL = env.get("SUPABASE_URL");
+    private static final String SUPABASE_KEY = env.get("SUPABASE_KEY");
+    private static final boolean DEBUG = Boolean.parseBoolean(env.get("DEBUG"));
 
     private static final HttpClient CLIENT = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
-    static {
-        String url = System.getenv("SUPABASE_URL");
-        String key = System.getenv("SUPABASE_KEY");
-        String debugEnv = System.getenv("SUPABASE_DEBUG");
 
-        Map<String, String> envFromFile = new HashMap<>();
-        boolean needLoadFile = (url == null || url.trim().isEmpty()) || (key == null || key.trim().isEmpty()) || (debugEnv == null);
-        if (needLoadFile) {
-            try {
-                envFromFile = loadDotEnv();
-                if ((url == null || url.trim().isEmpty()) && envFromFile.containsKey("SUPABASE_URL")) {
-                    url = envFromFile.get("SUPABASE_URL");
-                }
-                if ((key == null || key.trim().isEmpty()) && envFromFile.containsKey("SUPABASE_KEY")) {
-                    key = envFromFile.get("SUPABASE_KEY");
-                }
-                if (debugEnv == null && envFromFile.containsKey("SUPABASE_DEBUG")) {
-                    debugEnv = envFromFile.get("SUPABASE_DEBUG");
-                }
-            } catch (Exception e) {
-                // ignore — we'll handle missing config in ensureConfigured
-            }
-        }
-
-        SUPABASE_URL = url != null ? url.trim() : "";
-        SUPABASE_KEY = key != null ? key.trim() : "";
-        DEBUG = parseBoolean(debugEnv);
-    }
 
     private static boolean parseBoolean(String s) {
         if (s == null) return false;
@@ -67,7 +44,23 @@ public class SupabaseClient {
 
     private static void ensureConfigured() {
         if (SUPABASE_URL.isEmpty() || SUPABASE_KEY.isEmpty()) {
-            throw new IllegalStateException("SUPABASE_URL and SUPABASE_KEY must be set in the environment");
+            throw new IllegalStateException("SUPABASE_URL and SUPABASE_KEY must be set in the environment or .env");
+        }
+        String lower = SUPABASE_URL.toLowerCase();
+        if (!lower.startsWith("http://") && !lower.startsWith("https://")) {
+            throw new IllegalArgumentException("SUPABASE_URL appears invalid (missing http/https). Current value: " + SUPABASE_URL);
+        }
+    }
+
+    // Public helper called by UI startup to show a friendly message if config is invalid
+    public static void ensureConfiguredOrShowUI() {
+        try {
+            ensureConfigured();
+        } catch (RuntimeException ex) {
+            String msg = "Supabase configuration error:\n" + ex.getMessage()
+                    + "\n\nPlease fix the .env file or environment variables.\nFile: c:\\Users\\Miguel\\OneDrive\\Desktop\\SOFTWARE ENGINEERING PROJECT PROPOSAL\\.env";
+            JOptionPane.showMessageDialog(null, msg, "Supabase Configuration", JOptionPane.ERROR_MESSAGE);
+            // do not rethrow — caller (UI) can continue; any network calls will still fail with clear logs
         }
     }
 
@@ -148,44 +141,26 @@ public class SupabaseClient {
     }
 
     // --- Helper: load .env file from working dir or fallback project path ---
-    private static Map<String, String> loadDotEnv() {
-        Map<String, String> map = new HashMap<>();
-        // candidates: current working dir, and a likely project path
-        Path cwd = Paths.get(System.getProperty("user.dir"), ".env");
-        Path projectEnv = Paths.get("c:\\Users\\Miguel\\OneDrive\\Desktop\\SOFTWARE ENGINEERING PROJECT PROPOSAL\\.env");
-        Path[] candidates = new Path[] { cwd, projectEnv };
-
-        for (Path p : candidates) {
-            try {
-                if (Files.exists(p) && Files.isRegularFile(p)) {
-                    List<String> lines = Files.readAllLines(p, StandardCharsets.UTF_8);
-                    for (String raw : lines) {
-                        if (raw == null) continue;
-                        String line = raw.trim();
-                        if (line.isEmpty()) continue;
-                        if (line.startsWith("#") || line.startsWith("//")) continue;
-                        // optional "export " prefix
-                        if (line.startsWith("export ")) {
-                            line = line.substring(7).trim();
-                        }
-                        int eq = line.indexOf('=');
-                        if (eq <= 0) continue;
-                        String k = line.substring(0, eq).trim();
-                        String v = line.substring(eq + 1).trim();
-                        // remove surrounding quotes if present
-                        if ((v.startsWith("\"") && v.endsWith("\"")) || (v.startsWith("'") && v.endsWith("'"))) {
-                            v = v.substring(1, v.length()-1);
-                        }
-                        if (!k.isEmpty()) {
-                            map.put(k, v);
-                        }
-                    }
-                    // stop after first found file
-                    if (!map.isEmpty()) return map;
-                }
-            } catch (Exception ignored) {
+    private static Map<String, String> loadDotEnv(){
+        System.out.println("=== Load Dot Env ===");
+        var props = new Properties();
+        try(InputStream is = DeliveryJob.class.getResourceAsStream("resources/.env")){
+            if(is == null){
+                System.out.println("Cannot load properties file .env");
+                return null;
             }
+            props.load(is);
         }
-        return map;
+        catch(IOException e){
+            System.out.println("Cannot load properties file .env");
+            return null;
+        }
+        var result = new HashMap<String, String>();
+        result.put("SUPABASE_KEY", props.getProperty("SUPABASE_KEY"));
+        result.put("SUPABASE_URL", props.getProperty("SUPABASE_URL"));
+        result.put("SUPABASE_DEBUG", "False");
+        System.out.println("=== Load Dot Env ===");
+        return result;
     }
+
 }
