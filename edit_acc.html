@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDIT ACCOUNT</title>
+    <link rel="stylesheet" href="create_acc.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1> EDIT ACCOUNT</h1>
+            <h3>Which Field Would You Like to Edit?</h3>   
+        </div>
+    </header>
+
+    <main>
+    
+        <form action="process_edit.php" method ="post" id="editForm">
+      
+            <label for="Field">Field</label>
+            <select name="field" id="field" required
+                onchange="showFieldInputs()">
+			    	<option value="">-- Select Field --</option>
+				
+				    <option value="password">Password</option>
+				    <option value="first_name">First Name</option>
+				    <option value="last_name">Last Name</option>
+				    <option value="email">Email</option>
+				    <option value="phone_number">Phone Number</option>
+				    <option value="street">Street</option>
+				    <option value="city">City</option>
+				    <option value="parish">Parish</option>
+
+			</select>
+            <br><br>
+
+            <div id="normalInput">
+                <label for="new_value">New Value</label>
+                <input type="text" name="new_value" id="new_value">
+            </div>
+
+            <div id="parishInput" style="display: none;">
+                <label for="new_parish">Select Parish</label>
+                <select name="new_parish" id="new_parish">
+                    <option value="">-- Select Parish --</option>
+				    <option>Kingston</option>
+				    <option>St. Andrew</option>
+				    <option>St. Thomas</option>
+				    <option>Portland</option>
+				    <option>St. Mary</option>
+				    <option>St.Ann</option>
+				    <option>Trelawny</option>
+				    <option>St. James</option>
+				    <option>Hanover</option>
+				    <option>Westmoreland</option>
+				    <option>St. Elizabeth</option>
+				    <option>Manchester</option>
+				    <option>Clarendon</option>
+				    <option>St. Catherine</option>
+			    </select>
+		    </div>
+
+            <div id="passwordInputs" style="display: none;">
+                <label for="new_password">New Password</label>
+                <input type="password" name="new_password" id="new_password">
+
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" name="confirm_password" id="confirm_password">
+
+            </div>
+
+            <br>
+            <button  type="submit" class="btn">Update</button>
+        </form>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>First Class Hardware Limited </p>
+        </div>
+    </footer>
+
+    <script>
+        function showFieldInputs(){
+            var field = document.getElementById("field").value;
+
+            var normal = document.getElementById("normalInput");
+            var pass = document.getElementById("passwordInputs");
+            var parish = document.getElementById("parishInputs");
+
+            normal.style.display = "none";
+            pass.style.display = "none";
+            parish.style.display = "none";
+
+            if (field ===  "password") {
+                pass.style.display="block";
+            } else if (field === "parish") {
+                parish.style.display="block";
+            } else if (field !== "") {
+                normal.style.display="block";
+            }
+        }
+    </script>
+</body>
+</html>
