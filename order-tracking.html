@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <title>Use Case 9 - Order Tracking</title>
+    <link rel="stylesheet" href="order-tracking_styles.css">
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <h1>Order Tracking</h1>
+        <p>Keep up to date with your orders.</p>
+    </header>
+
+    <main class="page-container">
+        <section class="card">
+            <div class="card-header">
+                <h2>Your Orders</h2>
+                <!-- <button id="reloadConfirmedBtn" class="btn btn-primary">Reload Orders</button> -->
+            </div>            
+            <div id="orderStatusSection" style="display:block">
+                <div class="table-wrapper">
+
+                    <table class="data-table" id="ordersList">
+                        <caption></caption>
+                        <thead>
+                            <th scope="col">Order Number</th>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Goods</th>                
+                            <th scope="col">Status</th>                
+                            <th scope="col">Details</th>                
+                        </thead>
+                        
+                        <tbody id="ordersListBody">
+                            <!-- Javascript adds the items -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <section class="card">
+            <div class="card-header">
+                <h2>Order Details</h2>
+            </div>               
+            <hr>
+            <p id="detailsMessage"></p>
+            
+            
+            <div id="orderDetailsBox">
+                <!-- <button id="hideDetails" type="button">Hide Details</button> -->
+            </div>        
+        </section>
+    </main>
+        
+        <footer class="site-footer">
+        First Class Hardware Limited
+    </footer>    
+</body>
+<script src="order-tracking.js"></script>
+</html>
