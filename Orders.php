@@ -19,17 +19,14 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
     $quantity=(int)$quantityRaw;
 
     $itemlst=[
-        "Beef"=>600,
-        "Chicken"=>800,
-        "Bread"=>400
-
+        "Hammer"=>1200,
+        "Nails"=>800,
+        "Wood"=>4000,
+        "Cement"=>8000,
+        "Paint"=>9000
     ];
 
     $price=$itemlst[$itemRaw]*$quantityRaw;
-
-
-
-
 
 
 
