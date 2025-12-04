@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice Generation</title>
+  <link rel="stylesheet" href="invoice_styles.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="invoice.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1>INVOICE GENERATION</h1>
+    <p>Generate and view invoices for confirmed orders.</p>
+  </header>
+
+  <main class="page-container">
+   
+    <section class="card">
+      <div class="card-header">
+        <h2>Confirmed Orders</h2>
+        <button id="reloadConfirmedBtn" class="btn btn-primary">Reload Orders</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer ID</th>
+              <th>Status</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody id="confirmedOrdersBody">
+          
+          </tbody>
+        </table>
+        <p id="noConfirmedMsg" class="empty-message">No confirmed orders found.</p>
+      </div>
+    </section>
+
+    
+    <section class="card">
+      <div class="card-header">
+        <h2>Selected Order / Invoice Preview</h2>
+      </div>
+
+      <div id="selectedOrderBox" class="selected-box">
+        <p id="selectedOrderText">
+          No order selected yet. Click "View" on a confirmed order on the left.
+        </p>
+      </div>
+
+      <div class="invoice-section" id="invoiceSection" style="display:none;">
+        <h3>Order Items</h3>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Line Total</th>
+              </tr>
+            </thead>
+            <tbody id="invoiceItemsBody">
+              
+            </tbody>
+          </table>
+        </div>
+
+        <div class="totals-grid">
+          <div class="totals-row">
+            <span>Items Total:</span>
+            <span id="itemsTotalDisplay">$0.00</span>
+          </div>
+          <div class="totals-row totals-row-strong">
+            <span>Invoice Total:</span>
+            <span id="invoiceTotalDisplay">$0.00</span>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="clearSelectionBtn" class="btn btn-secondary">Clear Selection</button>
+          <button id="generateInvoiceBtn" class="btn btn-primary">Generate Invoice</button>
+        </div>
+      </div>
+
+      <p id="messageBox" class="message-box"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    First Class Hardware Limited
+  </footer>
+</body>
+</html>

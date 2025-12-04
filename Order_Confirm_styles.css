@@ -1,0 +1,132 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Times New Roman", serif;
+  background-color: #f2f2f2;
+  color: #000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.page-header {
+  background-color: #021528;
+  color: #ffffff;
+  text-align: center;
+  padding: 30px 0;
+  width: 100%;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 30px;
+  text-decoration: underline;
+  letter-spacing: 1px;
+}
+
+.page-subtitle {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+
+.page-content {
+  flex: 1;
+  background-color: #f2f2f2;
+  padding: 40px;
+  display: flex;
+  gap: 40px;
+  width: 100%;
+}
+
+
+.card {
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 20px;
+  flex: 1;                     
+  box-shadow: 0px 0px 6px rgba(0,0,0,0.1);
+  max-width: 50%;             
+}
+
+
+.card-left {
+  max-width: 40%;
+}
+
+
+.card-right {
+  max-width: 60%;
+}
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+tr:hover {
+  background-color: #f7f7f7;
+}
+
+
+button {
+  padding: 6px 12px;
+  margin-top: 8px;
+  margin-right: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+.btn-primary {
+  background-color: #021528;
+  color: white;
+  border: 1px solid #021528;
+}
+
+.btn-secondary {
+  background-color: #ffffff;
+  color: #021528;
+  border: 1px solid #021528;
+}
+
+
+#detailsBox {
+  border: 1px solid #ccc;
+  padding: 12px;
+  min-height: 100px;
+  background-color: #fafafa;
+}
+
+
+#message {
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+.success { color: green; }
+.error { color: red; }
+
+
+.page-footer {
+  background-color: #021528;
+  color: #fff;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 13px;
+  width: 100%;
+}

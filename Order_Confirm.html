@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Confirmation</title>
+
+  <link rel="stylesheet" href="Order_Confirm_styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+ 
+  <header class="page-header">
+    <h1>ORDER CONFIRMATION</h1>
+    <p class="page-subtitle">
+      View orders waiting to be confirmed and update their status.
+    </p>
+  </header>
+
+  
+  <main class="page-content">
+  
+    <section class="card card-left">
+      <h2>Pending Orders</h2>
+      <button id="btnReload" class="btn-primary">Reload Orders</button>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer ID</th>
+            <th>Status</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody id="ordersBody"></tbody>
+      </table>
+
+      <p id="noOrdersMsg" class="hidden">No pending orders found.</p>
+    </section>
+
+    
+    <section class="card card-right">
+      <h2>Selected Order</h2>
+
+      <div id="detailsBox">
+        <p>No order selected yet. Click "View" on an order above.</p>
+      </div>
+
+      <button id="btnClear" class="btn-secondary">Clear Selection</button>
+      <button id="btnConfirm" class="btn-primary" disabled>Confirm Order</button>
+
+      <p id="message"></p>
+    </section>
+  </main>
+
+  
+  <footer class="page-footer">
+    <p>First Class Hardware Limited</p>
+  </footer>
+
+  <script src="confirmation.js"></script>
+</body>
+</html>
