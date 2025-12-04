@@ -35,7 +35,7 @@ session_start();
         <div>
             <button class="btn" onclick="window.location.href='edit_acc.html'">Edit Account</button>
             <button class="btn" onclick="window.location.href='edit_acc.html'">Add Order</button>
-            <button class="btn" onclick="window.location.href='uc5.html'">View Orders</button>
+            <button class="btn" onclick="window.location.href='uc5.php'">View Orders</button>
 
 
         </div>
