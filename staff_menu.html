@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Staff Menu</title>
+  <link rel="stylesheet" href="menu.css">
+  <script defer src="menu.js"></script>
+</head>
+<body>
+  <header class="page-header">
+    <h1>STAFF MENU</h1>
+    <p class="page-subtitle">
+      Select an option below to manage orders and invoices.
+    </p>
+  </header>
+
+  <main class="page-content">
+    <section class="menu-card">
+      <div class="menu-header">
+        <h2>Welcome, <span id="staffName">Staff Member</span></h2>
+        <p class="staff-id">Staff ID: <span id="staffId">—</span></p>
+      </div>
+
+      <div class="menu-options">
+        <button class="menu-button" id="btnOrderConfirm">
+          Order Confirmation
+        </button>
+
+        <button class="menu-button" id="btnInvoice">
+          Generate Invoices
+        </button>
+
+         <button class="menu-button" id="btnDisplay">
+          Display Orders
+        </button>
+      </div>
+
+      <div class="menu-footer">
+        <button class="logout-button" id="btnLogout">Log Out</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>First Class Hardware Limited</p>
+  </footer>
+</body>
+</html>

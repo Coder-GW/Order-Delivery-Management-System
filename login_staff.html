@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Staff Login</title>
+  <link rel="stylesheet" href="login.css">
+
+  <!-- Supabase v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="login.js"></script>
+</head>
+<body>
+  <header class="page-header">
+    <h1>STAFF LOGIN</h1>
+    <p class="page-subtitle">
+      Authorized staff only. Enter your credentials to continue.
+    </p>
+  </header>
+
+  <main class="page-content">
+    <section class="login-card">
+      <h2>Sign In</h2>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            autocomplete="username"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            autocomplete="current-password"
+          >
+        </div>
+
+        <button type="submit" id="loginBtn" class="btn-primary">
+          Login
+        </button>
+      </form>
+
+      <p id="loginMessage" class="message"></p>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>First Class Hardware Limited</p>
+  </footer>
+</body>
+</html>
