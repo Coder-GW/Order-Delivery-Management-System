@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATE ACCOUNT</title>
+    <link rel="stylesheet" href="create_acc.css">
+    <script src="create_acc.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1> CREATE ACCOUNT</h1>
+            <h3>Enter Your Personal Information Below to Create an Account.</h3>   
+        </div>
+    </header>
+
+    <main>
+    
+        <h2> FORM</h2>
+        <form action="create_acc.php" method="post">
+        	<div class="form-group">
+
+                	<label for="Username">Username</label>
+                	<input type="text" name="Username" id="Username" placeholder="" required><br>
+
+                	<label for="Password">Password</label>
+                	<input type="password" 
+				name="Password" 
+				id="Password"
+				placeholder="Password should be at least 8 characters and atleast one number."
+				required
+				pattern=".*[0-9].*"
+				title="Password must be at least 8 characters long and atleast one number."><br>
+
+                	<label for="FirstName">First Name</label>
+                	<input type="text" name="FirstName" id="FirstName" 
+				placeholder="For eg. John" 
+				required
+				pattern="^[A-Za-z\-]+$"
+				title="First name must contain only letters or a hyphen."><br>
+
+                	<label for="LastName">Last Name</label>
+                	<input type="text" name="LastName" id="LastName" 
+				placeholder="For eg. Doe" 
+				required
+				pattern="^[A-Za-z\-]+$"
+				title="Last name must contain only letters or a hyphen."><br>
+
+                	<label for="Email">Email</label>
+                	<input type="email" name="Email" id="Email" 
+				placeholder="For eg. janedoe@gmail.com" 
+				required
+				pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+				title="Enter a valid email address."><br>
+     
+                	<label for="PhoneNumber">Phone Number</label>
+                	<input type="tel" name="PhoneNumber" id="PhoneNumber" 
+				placeholder="For eg. 8760000000" 
+				required
+				pattern="^[0-9]{10}$"
+				title="Phone number must be exactly 10 digits"><br>
+
+                	<label for="Street">Street</label>
+                	<input type="text" name="Street" id="Street" 
+				placeholder="For eg. 123 Maple Street" 
+				required><br>
+
+                	<label for="City">City</label>
+                	<input type="text" name="City" id="City" 
+				placeholder="For eg. Spanish Town" 
+				required
+				pattern="^[A-Za-z ]+$"
+				title="City must contain letters only."><br>
+
+                	<label for="Parish">Parish</label>
+               		<select name="Parish" id="Parish" required>
+				<option value="">-- Select Parish --</option>
+				<option>Kingston</option>
+				<option>St. Andrew</option>
+				<option>St. Thomas</option>
+				<option>Portland</option>
+				<option>St. Mary</option>
+				<option>St.Ann</option>
+				<option>Trelawny</option>
+				<option>St. James</option>
+				<option>Hanover</option>
+				<option>Westmoreland</option>
+				<option>St. Elizabeth</option>
+				<option>Manchester</option>
+				<option>Clarendon</option>
+				<option>St. Catherine</option>
+			</select>
+		</div>
+
+        	<br>
+		<button type="submit" class="btn">Submit</button>
+	</form>
+
+        <p id="message"></p>
+       
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>First Class Hardware Limited </p>
+        </div>
+    </footer>
+
+</body>
+</html>
